@@ -1,12 +1,15 @@
-#go-http-echo
+# http-echo
 
-A simple golang HTTP server to echo requests
+A simple HTTP echo server written in Go.
 
 ## How to use
 
-    go run echo.go
+    go run http-echo.go
 
-This will start the HTTP server running on localhost, port 7893. 
-To run on a different port, set the `SERVER_PORT` environment variable before running.
+This will compile and start the HTTP server. By default, it listens on port 8000.
+Once running, you can make requests from any HTTP client to `http://localhost:8000/`
+and the server will echo the request back in the response body.
 
-Once running, you can make requests from a browser (or any HTTP client) via `http://localhost:7893/`
+To use a different port, specify the desired port as a command-line argument:
+
+    go run http-echo.go 12345
