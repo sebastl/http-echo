@@ -18,11 +18,10 @@ func log(logLevel string, message string) {
 
 // EchoHandler echos back the request in the response body.
 func EchoHandler(writer http.ResponseWriter, request *http.Request) {
-    msg := fmt.Sprintf(
-        "Echoing %s request to %s back to %s",
-        request.Method, request.URL.Path, request.RemoteAddr,
-    )
-    log("INFO", msg)
+    log("INFO", fmt.Sprintf(
+        "%s - %s %s %s",
+        request.RemoteAddr, request.Method, request.URL.Path, request.Proto,
+    ))
 
     // permissive CORS configuration
     writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -35,10 +34,9 @@ func EchoHandler(writer http.ResponseWriter, request *http.Request) {
 func main() {
     port := defaultPort
     args := os.Args[1:]
-    if (len(args) != 0) {
+    if len(args) != 0 {
         port = args[0]
-        _, err := strconv.Atoi(port)
-        if (err != nil) {
+        if _, err := strconv.Atoi(port); err != nil {
             log("ERROR", "invalid port \"" + port + "\"")
             os.Exit(1)
         }
@@ -49,7 +47,7 @@ func main() {
     http.HandleFunc("/", EchoHandler)
 
     err := http.ListenAndServe(":" + port, nil)
-    if (err != nil) {
+    if err != nil {
         log("ERROR", err.Error())
         os.Exit(1)
     }
